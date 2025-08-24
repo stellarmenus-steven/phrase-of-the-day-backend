@@ -1,0 +1,34 @@
+<div class="card shadow mb-4">
+    <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">System Settings</h6>
+    </div>
+    <div class="card-body">
+        <form>
+            <div class="row">
+                <div class="col-md-6">
+                    <h6>API Configuration</h6>
+                    <div class="mb-3">
+                        <label for="rateLimit" class="form-label">Rate Limit (requests per 15 minutes)</label>
+                        <input type="number" class="form-control" id="rateLimit" value="100">
+                    </div>
+                    <div class="mb-3">
+                        <label for="apiBaseUrl" class="form-label">API Base URL</label>
+                        <input type="text" class="form-control" id="apiBaseUrl" value="/api/v1" readonly>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <h6>Server Configuration</h6>
+                    <div class="mb-3">
+                        <label for="port" class="form-label">Server Port</label>
+                        <input type="number" class="form-control" id="port" value="4001" readonly>
+                    </div>
+                    <div class="mb-3">
+                        <label for="environment" class="form-label">Environment</label>
+                        <input type="text" class="form-control" id="environment" value="development" readonly>
+                    </div>
+                </div>
+            </div>
+            <button type="submit" class="btn btn-primary">Save Settings</button>
+        </form>
+    </div>
+</div>
