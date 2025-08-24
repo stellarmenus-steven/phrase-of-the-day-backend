@@ -174,8 +174,12 @@ The API is protected with rate limiting:
 ## CORS Configuration
 
 Configured to allow requests from:
-- Development: `http://localhost:3000`, `http://localhost:3001`
-- Production: Configure in `.env`
+- Development: `http://localhost:5173`, `http://localhost:3000`, `http://localhost:3001`
+- Production: `https://spanishphraseoftheday.com`, `https://www.spanishphraseoftheday.com`
+
+You can customize CORS origins by setting these environment variables:
+- `CORS_ORIGINS_DEV`: Comma-separated list of development origins
+- `CORS_ORIGINS_PROD`: Comma-separated list of production origins
 
 ## Project Structure
 

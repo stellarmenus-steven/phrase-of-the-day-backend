@@ -17,10 +17,12 @@ const PORT = process.env.PORT || 4001;
 app.use(helmet());
 
 // CORS configuration for React app
+const corsOrigins = process.env.NODE_ENV === 'production'
+  ? (process.env.CORS_ORIGINS_PROD || 'https://spanishphraseoftheday.com,https://www.spanishphraseoftheday.com').split(',')
+  : (process.env.CORS_ORIGINS_DEV || 'http://localhost:5173,http://localhost:3000,http://localhost:3001').split(',');
+
 app.use(cors({
-  origin: process.env.NODE_ENV === 'production' 
-    ? ['https://your-react-app-domain.com'] 
-    : ['http://localhost:3000', 'http://localhost:3001'],
+  origin: corsOrigins,
   credentials: true
 }));
 
