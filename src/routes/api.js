@@ -8,6 +8,10 @@ const phraseData = {
       "id": 1,
       "phrase": "¡Más te vale!",
       "pronunciation": "mahs teh VAH-leh",
+      "audio": {
+        "url": "https://spanish-phrase-of-the-day.nyc3.cdn.digitaloceanspaces.com/mp3/mas-te-vale.mp3",
+        "format": "mp3"
+      },
       "date": {
         "spanish": "sábado, 24 de agosto de 2025",
         "dayName": "sábado",
@@ -53,6 +57,10 @@ const phraseData = {
           "context": {
             "en": "Parent to child",
             "es": "Padre/madre a hijo/a"
+          },
+          "audio": {
+            "url": "https://spanish-phrase-of-the-day.nyc3.cdn.digitaloceanspaces.com/mp3/mas-te-vale-llegar-a-tiempo.mp3",
+            "format": "mp3"
           }
         },
         {
@@ -61,6 +69,10 @@ const phraseData = {
           "context": {
             "en": "Friend to friend",
             "es": "Amigo/a a amigo/a"
+          },
+          "audio": {
+            "url": "https://spanish-phrase-of-the-day.nyc3.cdn.digitaloceanspaces.com/mp3/mas-te-vale-no-mentirme.mp3",
+            "format": "mp3"
           }
         },
         {
@@ -69,6 +81,10 @@ const phraseData = {
           "context": {
             "en": "Teacher to student",
             "es": "Profesor/a a estudiante"
+          },
+          "audio": {
+            "url": "https://spanish-phrase-of-the-day.nyc3.cdn.digitaloceanspaces.com/mp3/mas-te-vale-estudiar-para-el-examen.mp3",
+            "format": "mp3"
           }
         }
       ],
