@@ -18,7 +18,8 @@
     "cors": "^2.8.5",
     "helmet": "^7.1.0",
     "ejs": "^3.1.9",
-    "express-ejs-layouts": "^2.5.1"
+    "express-ejs-layouts": "^2.5.1",
+    "openai": "^4.28.0"
   },
   "devDependencies": {
     "nodemon": "^3.0.2"
