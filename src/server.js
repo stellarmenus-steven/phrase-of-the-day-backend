@@ -80,12 +80,57 @@ app.use(process.env.API_BASE_URL || '/api/v1', apiRoutes);
 app.use(process.env.ADMIN_BASE_URL || '/admin', adminRoutes);
 
 // Health check endpoint
-app.get('/health', (req, res) => {
-  res.json({ 
-    status: 'OK', 
-    timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV
-  });
+app.get('/health', async (req, res) => {
+  try {
+    // Check database connection
+    const mongoose = require('mongoose');
+    const dbState = mongoose.connection.readyState;
+    const dbStatus = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    };
+
+    const healthData = {
+      status: 'OK',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV,
+      database: {
+        status: dbStatus[dbState] || 'unknown',
+        connected: dbState === 1,
+        host: mongoose.connection.host || null,
+        name: mongoose.connection.name || null,
+        port: mongoose.connection.port || null
+      },
+      uptime: process.uptime(),
+      memory: {
+        used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+        total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024)
+      }
+    };
+
+    // If database is not connected, change overall status
+    if (dbState !== 1) {
+      healthData.status = 'DEGRADED';
+      healthData.database.error = 'Database connection is not established';
+    }
+
+    res.json(healthData);
+  } catch (error) {
+    console.error('Health check error:', error);
+    res.status(500).json({
+      status: 'ERROR',
+      timestamp: new Date().toISOString(),
+      environment: process.env.NODE_ENV,
+      error: error.message,
+      database: {
+        status: 'error',
+        connected: false,
+        error: 'Failed to check database status'
+      }
+    });
+  }
 });
 
 // 404 handler for API routes

@@ -288,13 +288,59 @@ router.get('/phrases/:id', async (req, res) => {
 });
 
 // GET /api/v1/health - API health check
-router.get('/health', (req, res) => {
-  res.json({
-    status: 'OK',
-    service: 'phrase-of-the-day-api',
-    timestamp: new Date().toISOString(),
-    version: '1.0.0'
-  });
+router.get('/health', async (req, res) => {
+  try {
+    // Check database connection
+    const mongoose = require('mongoose');
+    const dbState = mongoose.connection.readyState;
+    const dbStatus = {
+      0: 'disconnected',
+      1: 'connected',
+      2: 'connecting',
+      3: 'disconnecting'
+    };
+
+    const healthData = {
+      status: 'OK',
+      service: 'phrase-of-the-day-api',
+      timestamp: new Date().toISOString(),
+      version: '1.0.0',
+      database: {
+        status: dbStatus[dbState] || 'unknown',
+        connected: dbState === 1,
+        host: mongoose.connection.host || null,
+        name: mongoose.connection.name || null,
+        port: mongoose.connection.port || null
+      },
+      uptime: process.uptime(),
+      memory: {
+        used: Math.round(process.memoryUsage().heapUsed / 1024 / 1024),
+        total: Math.round(process.memoryUsage().heapTotal / 1024 / 1024)
+      }
+    };
+
+    // If database is not connected, change overall status
+    if (dbState !== 1) {
+      healthData.status = 'DEGRADED';
+      healthData.database.error = 'Database connection is not established';
+    }
+
+    res.json(healthData);
+  } catch (error) {
+    console.error('API health check error:', error);
+    res.status(500).json({
+      status: 'ERROR',
+      service: 'phrase-of-the-day-api',
+      timestamp: new Date().toISOString(),
+      version: '1.0.0',
+      error: error.message,
+      database: {
+        status: 'error',
+        connected: false,
+        error: 'Failed to check database status'
+      }
+    });
+  }
 });
 
 module.exports = router;
