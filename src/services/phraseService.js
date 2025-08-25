@@ -2,29 +2,67 @@ const Phrase = require('../models/Phrase');
 
 class PhraseService {
   /**
-   * Get today's phrase - returns the oldest unused phrase
+   * Get today's phrase with proper rotation logic:
+   * 1. First check if there's a phrase already used today
+   * 2. If not, get the oldest unused phrase (usedOn is null)
+   * 3. If no unused phrases, get the oldest used phrase
    */
   static async getTodaysPhrase(level = 'beginner') {
     try {
-      // Find the oldest phrase that hasn't been used (usedOn is null)
-      // or the phrase that was used the longest time ago
-      const phrase = await Phrase.findOne({
+      const today = new Date();
+      today.setHours(0, 0, 0, 0); // Start of today
+      const tomorrow = new Date(today);
+      tomorrow.setDate(tomorrow.getDate() + 1); // Start of tomorrow
+
+      // Step 1: Check if there's already a phrase used today
+      let phrase = await Phrase.findOne({
+        isActive: true,
+        difficulty: level,
+        usedOn: {
+          $gte: today,
+          $lt: tomorrow
+        }
+      });
+
+      if (phrase) {
+        console.log(`📅 Found phrase already used today: ${phrase.phrase}`);
+        return phrase;
+      }
+
+      // Step 2: Get the oldest unused phrase (usedOn is null)
+      phrase = await Phrase.findOne({
+        isActive: true,
+        difficulty: level,
+        usedOn: null
+      }).sort({
+        createdAt: 1 // Oldest first
+      });
+
+      if (phrase) {
+        console.log(`🆕 Found unused phrase: ${phrase.phrase}`);
+        // Mark this phrase as used today
+        phrase.usedOn = new Date();
+        await phrase.save();
+        return phrase;
+      }
+
+      // Step 3: If no unused phrases, get the oldest used phrase
+      phrase = await Phrase.findOne({
         isActive: true,
         difficulty: level
       }).sort({
-        usedOn: 1, // Sort by usedOn ascending (null values first)
-        createdAt: 1 // Then by creation date
+        usedOn: 1 // Oldest usedOn first
       });
 
-      if (!phrase) {
-        throw new Error('No phrases available');
+      if (phrase) {
+        console.log(`🔄 Reusing oldest phrase: ${phrase.phrase}`);
+        // Mark this phrase as used today
+        phrase.usedOn = new Date();
+        await phrase.save();
+        return phrase;
       }
 
-      // Mark this phrase as used today
-      phrase.usedOn = new Date();
-      await phrase.save();
-
-      return phrase;
+      throw new Error('No phrases available');
     } catch (error) {
       console.error('Error getting today\'s phrase:', error);
       throw error;
