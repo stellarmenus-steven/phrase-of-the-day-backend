@@ -94,10 +94,60 @@ const phraseData = {
         "¡Como no lo hagas...!"
       ],
       "difficulty": "intermediate",
-      "tags": ["warning", "threat", "advice", "colloquial"]
+      "tags": ["warning", "threat", "advice", "colloquial"],
+      "quiz": {
+        "questions": [
+          {
+            "id": 1,
+            "question": "What is the formality level of \"¡Más te vale!\"?",
+            "options": [
+              "academic",
+              "Informal",
+              "ceremonial",
+              "very formal"
+            ],
+            "correctAnswer": 1,
+            "explanation": {
+              "en": "\"¡Más te vale!\" is an informal expression, typically used in casual conversations between friends, family members, or in relaxed social situations.",
+              "es": "\"¡Más te vale!\" es una expresión informal, típicamente usada en conversaciones casuales entre amigos, familiares o en situaciones sociales relajadas."
+            }
+          },
+          {
+            "id": 2,
+            "question": "In what context is \"¡Más te vale!\" typically used?",
+            "options": [
+              "Ordering food",
+              "A warning or threat, often used by parents or authority figures",
+              "Greeting friends",
+              "Asking for directions"
+            ],
+            "correctAnswer": 1,
+            "explanation": {
+              "en": "This phrase is commonly used as a warning or threat, especially by parents to children or authority figures to subordinates, expressing a strong expectation that something must be done.",
+              "es": "Esta frase se usa comúnmente como una advertencia o amenaza, especialmente por padres a hijos o figuras de autoridad a subordinados, expresando una fuerte expectativa de que algo debe hacerse."
+            }
+          },
+          {
+            "id": 3,
+            "question": "What does \"¡Más te vale!\" mean in English?",
+            "options": [
+              "How are you?",
+              "You better! / You'd better!",
+              "See you later!",
+              "Good morning!"
+            ],
+            "correctAnswer": 1,
+            "explanation": {
+              "en": "The phrase \"¡Más te vale!\" translates to \"You better!\" or \"You'd better!\" in English, expressing a strong expectation or warning.",
+              "es": "La frase \"¡Más te vale!\" se traduce como \"¡Más te vale!\" o \"¡Será mejor que...!\" en inglés, expresando una fuerte expectativa o advertencia."
+            }
+          }
+        ]
+      }
     }
   ],
   "sponsor": {
+    "show": true,
     "show_after": 15,
     "headline": {
       "en": "Today's Phrase is Sponsored by Hispa Nacho",
