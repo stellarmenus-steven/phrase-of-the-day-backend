@@ -13,8 +13,23 @@ const adminRoutes = require('./routes/admin');
 const app = express();
 const PORT = process.env.PORT || 4001;
 
-// Security middleware
-app.use(helmet());
+// Security middleware with CSP configuration for admin interface
+app.use(helmet({
+  contentSecurityPolicy: {
+    directives: {
+      defaultSrc: ["'self'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net", "https://cdnjs.cloudflare.com"],
+      scriptSrc: ["'self'", "'unsafe-inline'", "https://cdn.jsdelivr.net"],
+      scriptSrcAttr: ["'unsafe-inline'"],
+      fontSrc: ["'self'", "https://cdnjs.cloudflare.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+      connectSrc: ["'self'"],
+      mediaSrc: ["'self'"],
+      objectSrc: ["'none'"],
+      upgradeInsecureRequests: []
+    }
+  }
+}));
 
 // CORS configuration for React app
 const corsOrigins = process.env.NODE_ENV === 'production'
@@ -53,6 +68,9 @@ app.set('layout', 'layouts/main');
 
 // Static files for admin interface
 app.use('/admin/static', express.static(path.join(__dirname, 'public')));
+
+// Static files for uploads (audio files)
+app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
 // Routes
 app.use(process.env.API_BASE_URL || '/api/v1', apiRoutes);
