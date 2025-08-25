@@ -3,6 +3,7 @@ const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
+const cookieParser = require('cookie-parser');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const connectDB = require('./config/database');
@@ -29,7 +30,8 @@ app.use(helmet({
       objectSrc: ["'none'"],
       upgradeInsecureRequests: []
     }
-  }
+  },
+  crossOriginEmbedderPolicy: false,
 }));
 
 // CORS configuration for React app
@@ -47,6 +49,7 @@ app.use(cors({
 // Body parsing middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
 
 // Rate limiting for API endpoints
 const apiLimiter = rateLimit({
@@ -75,8 +78,12 @@ app.use('/admin/static', express.static(path.join(__dirname, 'public')));
 // Static files for uploads (audio files)
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
+// Import auth routes
+const authRoutes = require('./routes/auth');
+
 // Routes
 app.use(process.env.API_BASE_URL || '/api/v1', apiRoutes);
+app.use(process.env.ADMIN_BASE_URL || '/admin', authRoutes); // Auth routes first
 app.use(process.env.ADMIN_BASE_URL || '/admin', adminRoutes);
 
 // Health check endpoint

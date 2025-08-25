@@ -3,6 +3,7 @@ const router = express.Router();
 const OpenAI = require('openai');
 const { writeFileSync } = require('node:fs');
 const path = require('path');
+const authMiddleware = require('../middleware/auth');
 
 // Initialize OpenAI
 const openai = new OpenAI({
@@ -10,10 +11,11 @@ const openai = new OpenAI({
 });
 
 // Admin dashboard - Main page
-router.get('/', (req, res) => {
+router.get('/', authMiddleware, (req, res) => {
   res.render('admin/dashboard', {
     title: 'Admin Dashboard',
     page: 'dashboard',
+    user: req.user,
     stats: {
       totalPhrases: 1,
       totalUsers: 0,
@@ -23,39 +25,43 @@ router.get('/', (req, res) => {
 });
 
 // Admin phrases management
-router.get('/phrases', (req, res) => {
+router.get('/phrases', authMiddleware, (req, res) => {
   res.render('admin/phrases', {
     title: 'Manage Phrases',
-    page: 'phrases'
+    page: 'phrases',
+    user: req.user
   });
 });
 
 // Admin users management
-router.get('/users', (req, res) => {
+router.get('/users', authMiddleware, (req, res) => {
   res.render('admin/users', {
     title: 'Manage Users',
-    page: 'users'
+    page: 'users',
+    user: req.user
   });
 });
 
 // Admin settings
-router.get('/settings', (req, res) => {
+router.get('/settings', authMiddleware, (req, res) => {
   res.render('admin/settings', {
     title: 'Admin Settings',
-    page: 'settings'
+    page: 'settings',
+    user: req.user
   });
 });
 
 // Admin audio generation
-router.get('/audio', (req, res) => {
+router.get('/audio', authMiddleware, (req, res) => {
   res.render('admin/audio', {
     title: 'Generate Audio',
-    page: 'audio'
+    page: 'audio',
+    user: req.user
   });
 });
 
 // Generate audio endpoint
-router.post('/audio/generate', async (req, res) => {
+router.post('/audio/generate', authMiddleware, async (req, res) => {
   try {
     const { fileName, text, voice = 'alloy', format = 'mp3', model = 'tts-1' } = req.body;
 
