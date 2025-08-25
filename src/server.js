@@ -32,13 +32,15 @@ app.use(helmet({
 }));
 
 // CORS configuration for React app
-const corsOrigins = process.env.NODE_ENV === 'production'
-  ? (process.env.CORS_ORIGINS_PROD || 'https://spanishphraseoftheday.com,https://www.spanishphraseoftheday.com').split(',')
-  : (process.env.CORS_ORIGINS_DEV || 'http://localhost:5173,http://localhost:3000,http://localhost:3001').split(',');
-
 app.use(cors({
-  origin: corsOrigins,
-  credentials: true
+  origin: [
+    'https://spanishphraseoftheday.com',  // Your production domain
+    'http://localhost:5173',              // Local development
+    'http://localhost:5174'               // Local development fallback
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 // Body parsing middleware
