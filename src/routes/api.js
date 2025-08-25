@@ -161,7 +161,7 @@ const phraseData = {
             "id": 3,
             "question": {
               "en": "What does \"¡Más te vale!\" mean in English?",
-              "es": "¿Qué significa \"¡Más te vale!\" en inglés?"
+              "es": "¿Qué significa \"¡Más te vale!\"?"
             },
             "options": [
               {
