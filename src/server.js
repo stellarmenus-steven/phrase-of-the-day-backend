@@ -8,10 +8,6 @@ const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
 const connectDB = require('./config/database');
 
-// Import routes
-const apiRoutes = require('./routes/api');
-const adminRoutes = require('./routes/admin');
-
 const app = express();
 const PORT = process.env.PORT || 4001;
 
@@ -78,7 +74,9 @@ app.use('/admin/static', express.static(path.join(__dirname, 'public')));
 // Static files for uploads (audio files)
 app.use('/uploads', express.static(path.join(__dirname, '..', 'uploads')));
 
-// Import auth routes
+// Import routes
+const apiRoutes = require('./routes/api');
+const adminRoutes = require('./routes/admin');
 const authRoutes = require('./routes/auth');
 
 // Routes

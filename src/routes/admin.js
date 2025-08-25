@@ -24,6 +24,20 @@ router.get('/', authMiddleware, (req, res) => {
   });
 });
 
+// Admin dashboard - Dashboard page (alias)
+router.get('/dashboard', authMiddleware, (req, res) => {
+  res.render('admin/dashboard', {
+    title: 'Admin Dashboard',
+    page: 'dashboard',
+    user: req.user,
+    stats: {
+      totalPhrases: 1,
+      totalUsers: 0,
+      todayRequests: 0
+    }
+  });
+});
+
 // Admin phrases management
 router.get('/phrases', authMiddleware, (req, res) => {
   res.render('admin/phrases', {
