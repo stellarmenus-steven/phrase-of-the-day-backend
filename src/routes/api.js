@@ -20,12 +20,12 @@ const phraseData = {
         "year": 2025
       },
       "meaning": {
-        "en": "You better! / You'd better!",
-        "es": "¡Será mejor que lo hagas! / ¡Tienes que hacerlo!"
+        "en": "You better!",
+        "es": "¡Tienes que hacerlo!"
       },
       "context": {
-        "en": "A warning or threat, often used by parents or authority figures",
-        "es": "Una advertencia o amenaza, a menudo usada por padres o figuras de autoridad"
+        "en": "A warning or threat",
+        "es": "Una advertencia o amenaza"
       },
       "formality": "informal",
       "regions": {
