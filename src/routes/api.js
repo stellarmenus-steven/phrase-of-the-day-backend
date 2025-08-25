@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
-
-// Hardcoded phrase data
+const PhraseService = require('../services/phraseService');
 const phraseData = {
   "phrases": [
     {
@@ -192,8 +191,8 @@ const phraseData = {
     }
   ],
   "sponsor": {
-    "show": true,
-    "show_after": 15,
+    "show": false,
+    "show_after": 45,
     "headline": {
       "en": "Today's Phrase is Sponsored by Hispa Nacho",
       "es": "La Frase de Hoy es Patrocinada por"
@@ -212,23 +211,43 @@ const phraseData = {
 };
 
 // GET /api/v1/phrases - Get phrase of the day
-router.get('/phrases', (req, res) => {
+router.get('/phrases', async (req, res) => {
   try {
     const level = req.query.level || 'beginner';
     
     // Validate level parameter
-    if (level !== 'beginner' && level !== 'intermediate') {
+    if (level !== 'beginner' && level !== 'intermediate' && level !== 'advanced') {
       return res.status(400).json({
         error: 'Invalid level parameter',
-        message: 'Level must be either "beginner" or "intermediate"',
-        validLevels: ['beginner', 'intermediate']
+        message: 'Level must be either "beginner", "intermediate", or "advanced"',
+        validLevels: ['beginner', 'intermediate', 'advanced']
       });
     }
 
-    // For now, return the same data regardless of level
-    // In the future, this will filter based on the level parameter
+    // Get today's phrase from database
+    const phrase = await PhraseService.getTodaysPhrase(level);
+    
+    // Format response to match existing structure
     const response = {
-      ...phraseData,
+      phrases: [phrase],
+      sponsor: {
+        show: false,
+        show_after: 45,
+        headline: {
+          en: "Today's Phrase is Sponsored by Hispa Nacho",
+          es: "La Frase de Hoy es Patrocinada por"
+        },
+        image_url: "https://media.calendesk.com/calendesk-production/da0a6fd7-e5ae-4851-82a2-3b8adfc08bc8/688b91860686b.jpg",
+        text: {
+          en: "Interested in taking lessons?",
+          es: "¿Interesado en tomar lecciones?"
+        },
+        button_text: {
+          en: "Click Here",
+          es: "Haz Clic Aquí"
+        },
+        button_url: "https://hispanacho.calendesk.net/"
+      },
       level: level,
       timestamp: new Date().toISOString()
     };
@@ -238,16 +257,17 @@ router.get('/phrases', (req, res) => {
     console.error('Error in /phrases endpoint:', error);
     res.status(500).json({
       error: 'Internal server error',
-      message: 'Failed to retrieve phrase data'
+      message: 'Failed to retrieve phrase data',
+      details: error.message
     });
   }
 });
 
 // GET /api/v1/phrases/:id - Get specific phrase by ID
-router.get('/phrases/:id', (req, res) => {
+router.get('/phrases/:id', async (req, res) => {
   try {
-    const phraseId = parseInt(req.params.id);
-    const phrase = phraseData.phrases.find(p => p.id === phraseId);
+    const phraseId = req.params.id;
+    const phrase = await PhraseService.getPhraseById(phraseId);
     
     if (!phrase) {
       return res.status(404).json({
@@ -261,7 +281,8 @@ router.get('/phrases/:id', (req, res) => {
     console.error('Error in /phrases/:id endpoint:', error);
     res.status(500).json({
       error: 'Internal server error',
-      message: 'Failed to retrieve phrase data'
+      message: 'Failed to retrieve phrase data',
+      details: error.message
     });
   }
 });

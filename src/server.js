@@ -5,6 +5,7 @@ const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
 const expressLayouts = require('express-ejs-layouts');
 const path = require('path');
+const connectDB = require('./config/database');
 
 // Import routes
 const apiRoutes = require('./routes/api');
@@ -121,9 +122,22 @@ app.use((err, req, res, next) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`🚀 Server running on port ${PORT}`);
-  console.log(`📱 API available at http://localhost:${PORT}${process.env.API_BASE_URL || '/api/v1'}`);
-  console.log(`⚙️  Admin interface at http://localhost:${PORT}${process.env.ADMIN_BASE_URL || '/admin'}`);
-  console.log(`🏥 Health check at http://localhost:${PORT}/health`);
-});
+// Connect to database and start server
+const startServer = async () => {
+  try {
+    // Connect to MongoDB
+    await connectDB();
+    
+    app.listen(PORT, () => {
+      console.log(`🚀 Server running on port ${PORT}`);
+      console.log(`📱 API available at http://localhost:${PORT}${process.env.API_BASE_URL || '/api/v1'}`);
+      console.log(`⚙️  Admin interface at http://localhost:${PORT}${process.env.ADMIN_BASE_URL || '/admin'}`);
+      console.log(`🏥 Health check at http://localhost:${PORT}/health`);
+    });
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
+  }
+};
+
+startServer();
