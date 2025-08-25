@@ -99,12 +99,27 @@ const phraseData = {
         "questions": [
           {
             "id": 1,
-            "question": "What is the formality level of \"¡Más te vale!\"?",
+            "question": {
+              "en": "What is the formality level of \"¡Más te vale!\"?",
+              "es": "¿Cuál es el nivel de formalidad de \"¡Más te vale!\"?"
+            },
             "options": [
-              "academic",
-              "Informal",
-              "ceremonial",
-              "very formal"
+              {
+                "en": "Academic",
+                "es": "Académico"
+              },
+              {
+                "en": "Informal",
+                "es": "Informal"
+              },
+              {
+                "en": "Ceremonial",
+                "es": "Ceremonial"
+              },
+              {
+                "en": "Very formal",
+                "es": "Muy formal"
+              }
             ],
             "correctAnswer": 1,
             "explanation": {
@@ -114,12 +129,27 @@ const phraseData = {
           },
           {
             "id": 2,
-            "question": "In what context is \"¡Más te vale!\" typically used?",
+            "question": {
+              "en": "In what context is \"¡Más te vale!\" typically used?",
+              "es": "¿En qué contexto se usa típicamente \"¡Más te vale!\"?"
+            },
             "options": [
-              "Ordering food",
-              "A warning or threat, often used by parents or authority figures",
-              "Greeting friends",
-              "Asking for directions"
+              {
+                "en": "Ordering food",
+                "es": "Pedir comida"
+              },
+              {
+                "en": "A warning or threat",
+                "es": "Una advertencia o amenaza"
+              },
+              {
+                "en": "Greeting friends",
+                "es": "Saludar amigos"
+              },
+              {
+                "en": "Asking for directions",
+                "es": "Pedir direcciones"
+              }
             ],
             "correctAnswer": 1,
             "explanation": {
@@ -129,12 +159,27 @@ const phraseData = {
           },
           {
             "id": 3,
-            "question": "What does \"¡Más te vale!\" mean in English?",
+            "question": {
+              "en": "What does \"¡Más te vale!\" mean in English?",
+              "es": "¿Qué significa \"¡Más te vale!\" en inglés?"
+            },
             "options": [
-              "How are you?",
-              "You better! / You'd better!",
-              "See you later!",
-              "Good morning!"
+              {
+                "en": "How are you?",
+                "es": "¿Cómo estás?"
+              },
+              {
+                "en": "You better!",
+                "es": "¡Más te vale!"
+              },
+              {
+                "en": "See you later!",
+                "es": "¡Hasta luego!"
+              },
+              {
+                "en": "Good morning!",
+                "es": "¡Buenos días!"
+              }
             ],
             "correctAnswer": 1,
             "explanation": {
